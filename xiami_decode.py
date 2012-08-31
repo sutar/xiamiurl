@@ -29,6 +29,3 @@ def xiami_decode(s):
     url = url.replace('^', '0')
     return url
 
-if __name__ == '__main__':
-    url = '7h%3.8%7%29_9t2.n1275%815tFxe1F1E5373p%it6481E1%.%2a%%%%%175m3Fm2552278EpAfiFEEF56663'
-    print(xiami_decode(url))

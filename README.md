@@ -1,27 +1,30 @@
-Xiami.com URL Retriver
-========
+# Xiami.com Alumb Retriever & Downloader w/ ID3 info
 
-This code can be used to retrive the trial play link of xiami.com
+## Features
 
-It can runs on SAE(Sina App Engine) without any change, if you would like to run it on other platform, modification will not be difficult.
+* Album download supported
+* ID3 info added automaticly
+* ID3 info with LYRICS and COVER PICTURE as well as artist, album etc.
+* Download songs by using `wget` tool
 
-Supported Link Type
-========
-http://www.xiami.com/song/1769831786
+## Fork Info
 
-http://www.xiami.com/album/406532
+This tool is forked from `https://github.com/dndx/xiamiurl`
 
-http://www.xiami.com/song/showcollect/id/11065698
+    This code can be used to retrive the trial play link of xiami.com
+    It can runs on SAE(Sina App Engine) without any change, if you would like to run it on other platform, modification will not be difficult.
 
-Live Demo
-========
-http://xmurl.sinaapp.com/
+## Supported Link Type
 
-Other Link
-========
-* http://python.org/
-* http://flask.pocoo.org/
-* http://www.crummy.com/software/BeautifulSoup/
-* http://jquery.com/
-* http://twitter.github.com/bootstrap/
-* http://code.google.com/p/zeroclipboard/
+http://www.xiami.com/album/XXXXXX
+
+i.e. `http://www.xiami.com/album/460478`
+
+## Required Package
+* mutagen (Python)
+* wget (*nix)
+
+## Usage
+1. `python download_album.py`
+2. Enter Xiami album url
+3. Enjoy
