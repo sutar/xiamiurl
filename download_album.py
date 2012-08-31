@@ -84,9 +84,8 @@ def id3_cook(directory, filename, item, track_num):
     audio.save()
 
 if __name__ == '__main__':
-    # album = raw_input('Enter xiami album url: ')
+    album = raw_input('Enter xiami album url: ')
     # album = 'http://www.xiami.com/album/460478'
-    album = 'http://www.xiami.com/album/340249'
     albumid = album.split('/')[-1]
     result, pic, directory = parse_alblum(albumid)
     directory = DIR_PREFIX + directory
