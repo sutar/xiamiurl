@@ -29,25 +29,28 @@ def parse_alblum(alblumid):
     result = []
     songs = xml.playlist.trackList.find_all('track')
     pic = songs[0].pic.string.replace('_1', '_2')
-    directory = '%s - [%s].(MP3)' % (songs[0].artist.string, songs[0].album_name.string)
+    directory = '%s - [%s].(MP3)' % (songs[0].artist.string.replace('/', ' '), songs[0].album_name.string.replace('/', ' '))
     directory = directory.replace(' ','.')
     directory = directory.replace('/','')
     for x in songs:
-        lyric = urllib2.urlopen(x.lyric.string, timeout=30).read()
-        lyric = re.sub('(\[.*?\][\n]*)+', '', unicode(lyric))
+        try:
+            lyric = urllib2.urlopen(x.lyric.string, timeout=30).read()
+            lyric = re.sub('(\[.*?\][\n]*)+', '', unicode(lyric))
+        except:
+            print 'No lyric'
         print 'parsing... ', x.title.string
         result.append(dict(
             url=xiami_decode(x.location.string),
-            song=x.title.string,
-            album=x.album_name.string,
-            artist=x.artist.string,
+            song=x.title.string.replace('/', ' '),
+            album=x.album_name.string.replace('/', ' '),
+            artist=x.artist.string.replace('/', ' '),
             lyric=lyric
             )
         )
     return result, pic, directory
 
 def wget(referer, down_url, filename):
-    os.system('wget -c --output-document="%s" --referer="%s" "%s"' % (filename , referer, down_url))
+    os.system('wget -t10 -c --output-document="%s" --referer="%s" "%s"' % (filename , referer, down_url))
 
 def get_pic(directory, down_url):
     filename = unicode(directory + '/cover.jpg')
@@ -61,6 +64,8 @@ def download_songs(result, album, directory):
         filename = '%s/%d. %s - %s - %s.mp3' % (directory, track_num, item['artist'], item['album'], item['song'])
         wget(album, item['url'], filename)
         id3_cook(directory, filename, item, track_num)
+    os.system('zip -r "%s.zip" "%s"' % (directory, directory))
+    os.system('mv "%s.zip" /root/Dropbox/down/' % (directory))
 
 def id3_cook(directory, filename, item, track_num):
     pic_file = directory + '/cover.jpg'
@@ -84,7 +89,10 @@ def id3_cook(directory, filename, item, track_num):
     audio.save()
 
 if __name__ == '__main__':
-    album = raw_input('Enter xiami album url: ')
+    # album = raw_input('Enter xiami album url: ')
+    album = sys.argv[1]
+    if not album.startswith('http://www.xiami.com/album/'):
+        exit()
     # album = 'http://www.xiami.com/album/460478'
     albumid = album.split('/')[-1]
     result, pic, directory = parse_alblum(albumid)
